@@ -1,156 +1,268 @@
-DevOps Rescue Lab
+<div align="center">
 
-A complete end-to-end DevOps project demonstrating real-world cloud infrastructure provisioning, configuration automation, and application deployment using Terraform, Ansible, and AWS.
+# 🚀 DevOps Rescue Lab
 
-This project simulates a production-style DevOps workflow:
+**End-to-end DevOps project demonstrating infrastructure provisioning, configuration management, and application deployment**
 
-Provision → Configure → Deploy → Destroy
+![Terraform](https://img.shields.io/badge/Terraform-IaC-844FBA?style=for-the-badge&logo=terraform&logoColor=white)
+![Ansible](https://img.shields.io/badge/Ansible-Config_Mgmt-EE0000?style=for-the-badge&logo=ansible&logoColor=white)
+![AWS](https://img.shields.io/badge/AWS-Cloud-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white)
+![Nginx](https://img.shields.io/badge/Nginx-Web_Server-009639?style=for-the-badge&logo=nginx&logoColor=white)
+![Ubuntu](https://img.shields.io/badge/Ubuntu-22.04-E95420?style=for-the-badge&logo=ubuntu&logoColor=white)
 
-📸 Architecture Diagram
-User
-  ↓
-Internet
-  ↓
-EC2 Instance (Ubuntu + Nginx)
-  ↓
-Security Group (Firewall Rules)
-  ↓
-Public Subnet
-  ↓
-Route Table
-  ↓
-Internet Gateway
-  ↓
-VPC (10.0.0.0/16)
-🏗️ Tech Stack
-AWS (EC2, VPC, Subnets, IGW, Security Groups)
-Terraform (Infrastructure as Code)
-Ansible (Configuration Management)
-Ubuntu Server
-Nginx
-Git & GitHub
-📸 Screenshots (Add Here)
+</div>
 
-Replace with real images:
+---
 
-Terraform apply successful output
-EC2 instance running in AWS console
-Ansible Nginx installation success
-Browser showing Nginx page via public IP
-🚀 Phase 1: Infrastructure Provisioning (Terraform)
-Initialize Terraform
+## 📑 Table of Contents
+
+- [Workflow](#-workflow)
+- [Architecture](#-architecture)
+- [Tech Stack](#-tech-stack)
+- [Screenshots](#-screenshots)
+- [Terraform Workflow](#️-terraform-workflow)
+- [What Terraform Creates](#️-what-terraform-creates)
+- [Networking Basics](#-networking-basics)
+- [Security Group Rules](#-security-group-rules)
+- [Ansible Deployment](#️-ansible-deployment)
+- [What Ansible Does](#-what-ansible-does)
+- [Final Output](#-final-output)
+- [Cleanup](#-cleanup-important)
+- [FAQ](#-faq-interview-style)
+- [Author](#-author)
+
+---
+
+## 📌 Workflow
+
+```mermaid
+flowchart TD
+    A[🏗️ Provision Infrastructure<br/>Terraform] --> B[⚙️ Configure Server<br/>Ansible]
+    B --> C[🚀 Deploy Application<br/>Nginx]
+    C --> D[🌐 Access via Browser]
+    D --> E[🧹 Destroy Resources]
+
+    style A fill:#844FBA,color:#fff
+    style B fill:#EE0000,color:#fff
+    style C fill:#009639,color:#fff
+    style D fill:#326CE5,color:#fff
+    style E fill:#555,color:#fff
+```
+
+---
+
+## 📸 Architecture
+
+```mermaid
+flowchart TD
+    U[👤 User] --> I[🌍 Internet]
+    I --> IGW[🚪 Internet Gateway]
+    IGW --> VPC[☁️ VPC — 10.0.0.0/16]
+    VPC --> RT[📋 Route Table]
+    RT --> SUB[🔓 Public Subnet]
+    SUB --> SG[🛡️ Security Group<br/>Firewall Rules]
+    SG --> EC2[🖥️ EC2 Instance<br/>Ubuntu + Nginx]
+
+    style U fill:#326CE5,color:#fff
+    style EC2 fill:#FF9900,color:#fff
+    style SG fill:#EE0000,color:#fff
+    style VPC fill:#232F3E,color:#fff
+```
+
+---
+
+## 🧰 Tech Stack
+
+| Category | Tools |
+|---|---|
+| ☁️ **Cloud Provider** | AWS (EC2, VPC, Subnets, IGW, Security Groups) |
+| 🏗️ **Infrastructure as Code** | Terraform |
+| ⚙️ **Configuration Management** | Ansible |
+| 🖥️ **Operating System** | Ubuntu Server 22.04 |
+| 🌐 **Web Server** | Nginx |
+| 📦 **Version Control** | Git + GitHub |
+
+---
+
+## 📸 Screenshots
+
+> 💡 Add your screenshots to the `/screenshots` folder and update the table below.
+
+| Step | Description | Preview |
+|---|---|---|
+| 🏗️ Terraform Apply | Infrastructure creation success | `/screenshots/terraform-apply.png` |
+| ☁️ AWS EC2 | Running instance | `/screenshots/aws-ec2.png` |
+| ⚙️ Ansible Run | Nginx installation success | `/screenshots/ansible-run.png` |
+| 🌐 Browser Output | Nginx landing page | `/screenshots/browser-output.png` |
+
+---
+
+## ⚙️ Terraform Workflow
+
+**1. Initialize**
+```bash
 terraform init
-Validate configuration
+```
+
+**2. Validate**
+```bash
 terraform validate
-Preview changes
+```
+
+**3. Plan**
+```bash
 terraform plan
-Deploy infrastructure
+```
+
+**4. Apply**
+```bash
 terraform apply
-🧱 What Terraform Creates
-VPC (10.0.0.0/16)
-Public Subnet (10.0.1.0/24)
-Private Subnet (10.0.2.0/24)
-Internet Gateway
-Route Table
-Security Group (HTTP, HTTPS, SSH)
-EC2 Instance (Ubuntu 22.04)
-🌐 Networking Concepts
-VPC
+```
 
-A logically isolated network inside AWS.
+---
 
-Subnet
+## 🏗️ What Terraform Creates
 
-Defines where resources live (public or private).
+- ✅ VPC (`10.0.0.0/16`)
+- ✅ Public & Private Subnets
+- ✅ Internet Gateway
+- ✅ Route Table
+- ✅ Security Group (HTTP, HTTPS, SSH)
+- ✅ EC2 Instance (Ubuntu)
 
-Internet Gateway
+---
 
-Allows internet access for public resources.
+## 🌐 Networking Basics
 
-Route Table
+| Component | Description |
+|---|---|
+| **VPC** | Isolated network inside AWS |
+| **Subnet** | Defines resource placement (public/private) |
+| **Internet Gateway** | Allows internet access |
+| **Route Table** | Controls traffic flow |
 
-Controls traffic flow inside the VPC.
+---
 
-🔐 Security Group Rules
-Port	Protocol	Purpose
-22	SSH	Remote access
-80	HTTP	Web traffic
-443	HTTPS	Secure web traffic
+## 🔐 Security Group Rules
 
-Outbound traffic is open to allow updates and package installation.
+| Port | Protocol | Purpose |
+|:---:|:---:|---|
+| 22 | SSH | Remote access |
+| 80 | HTTP | Web traffic |
+| 443 | HTTPS | Secure traffic |
 
-⚙️ Phase 2: Configuration Management (Ansible)
-Test connection
+---
+
+## ⚙️ Ansible Deployment
+
+**Test Connection**
+```bash
 ansible -i inventory.ini web -m ping
-Install Nginx
+```
+
+**Install Nginx**
+```bash
 ansible-playbook -i inventory.ini install-nginx.yml
-🧠 What Ansible Does
-Connects to EC2 via SSH
-Installs Nginx
-Starts and enables service
-Ensures idempotent configuration
-🌍 Final Output
+```
 
-After deployment:
+---
 
-EC2 is publicly accessible
-Nginx is running
-Web server responds via browser
+## 🧠 What Ansible Does
+
+- 🔌 Connects via SSH
+- 📦 Installs Nginx
+- ▶️ Starts the service
+- 🔁 Ensures idempotency
+
+---
+
+## 🌍 Final Output
+
+```
 http://<EC2_PUBLIC_IP>
-🧹 Cleanup (VERY IMPORTANT)
+```
 
-To avoid AWS charges:
+✅ Nginx web server is now live.
 
+---
+
+## 🧹 Cleanup (IMPORTANT)
+
+```bash
 terraform destroy
+```
 
-This removes:
+**Removes:**
+- 🖥️ EC2 instance
+- ☁️ VPC
+- 🔓 Subnets
+- 🛡️ Security groups
+- 🚪 Internet Gateway
 
-EC2
-VPC
-Subnets
-Security Groups
-Internet Gateway
-Route Tables
-❓ Interview FAQ (DevOps Focused)
-What is an EC2 instance?
+> ⚠️ Always destroy resources after testing to avoid unnecessary AWS charges.
 
-A virtual server in AWS used to run applications and services.
+---
 
-Why use a subnet?
+## ❓ FAQ (Interview Style)
 
-It defines network segmentation and controls resource placement.
+<details>
+<summary><strong>What is EC2?</strong></summary>
+<br>
+A virtual server in AWS used to run applications.
+</details>
 
-What is a Security Group?
+<details>
+<summary><strong>Why subnet?</strong></summary>
+<br>
+Defines network segmentation and resource placement.
+</details>
 
-A virtual firewall that controls inbound and outbound traffic.
+<details>
+<summary><strong>What is a Security Group?</strong></summary>
+<br>
+A virtual firewall controlling inbound/outbound traffic.
+</details>
 
-Difference between AMI and Instance Type?
-AMI → Operating system image
-Instance Type → CPU, RAM, and hardware size
-Why Terraform?
+<details>
+<summary><strong>AMI vs Instance Type?</strong></summary>
+<br>
 
-To define infrastructure as code and ensure repeatable deployments.
+- **AMI** → Operating system image
+- **Instance Type** → CPU & memory size
+</details>
 
-Why Ansible?
+<details>
+<summary><strong>Why Terraform?</strong></summary>
+<br>
+Infrastructure as Code for repeatable deployments.
+</details>
 
-To automate server configuration and software installation.
+<details>
+<summary><strong>Why Ansible?</strong></summary>
+<br>
+Automates server configuration and software setup.
+</details>
 
-Why is SSH needed?
+<details>
+<summary><strong>Why SSH?</strong></summary>
+<br>
+Remote access into the EC2 instance.
+</details>
 
-To remotely access and manage the EC2 instance securely.
+<details>
+<summary><strong>Why destroy resources?</strong></summary>
+<br>
+To avoid unnecessary AWS charges.
+</details>
 
-Why destroy resources?
+---
 
-To prevent unnecessary cloud costs and avoid billing.
+## 👤 Author
 
-📌 Key Learnings
-AWS networking fundamentals
-Infrastructure as Code (Terraform)
-Configuration automation (Ansible)
-Cloud deployment lifecycle
-Real-world DevOps workflow
-Safe infrastructure teardown
-👤 Author
+<div align="center">
 
-Nkechi Anna Ahanonye
-DevOps Engineer | Cloud & Automation Enthusiast
+**Nkechi Anna Ahanonye**
+
+*DevOps Engineer | Cloud & Automation*
+
+</div>
